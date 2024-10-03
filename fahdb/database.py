@@ -167,7 +167,7 @@ class FAHDatabase(DatabaseBase):
 
     @classmethod
     def _from_csv(cls, csv_path: str):
-        df = pd.read_csv(csv_path)
+        df = pd.read_csv(csv_path, dtype=str)
         return cls(
             home=str(Path(csv_path).parent),
             records=[ValidatedFAHRecord(**record) for record in df.to_dict(orient="records")],
