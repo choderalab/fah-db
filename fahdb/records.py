@@ -92,8 +92,8 @@ class SourceRecord(ValidatedRecordBase):
         if len(list(json_files)) == 0:
             json_files = directory.glob("*.json")
         try:
-            json_file = next(json_files)
-        except StopIteration:
+            json_file = list(json_files)[0]
+        except IndexError:
             raise FileNotFoundError(f"No json files found in {directory}")
         return cls.from_json_file(json_file, project)
 
