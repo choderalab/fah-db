@@ -81,16 +81,15 @@ class SourceRecord(ValidatedRecordBase):
 
     @classmethod
     def from_json_file(cls, json_path, project: str):
-        with open(json_path, "r") as f:
-            new_record = NewRecord.from_json_file(json_path)
-            new_record.update_home(json_path.parent)
-            new_record.write_json_file()
-            return cls(project=project, **new_record.dict())
+        new_record = NewRecord.from_json_file(json_path)
+        new_record.update_home(json_path.parent)
+        new_record.write_json_file()
+        return cls(project=project, **new_record.dict())
 
     @classmethod
     def from_directory(cls, directory: Path, project: str):
         json_files = directory.glob("*record.json")
-        if not json_files:
+        if len(list(json_files)) == 0:
             json_files = directory.glob("*.json")
         try:
             json_file = next(json_files)
