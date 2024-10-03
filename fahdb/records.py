@@ -89,9 +89,7 @@ class SourceRecord(ValidatedRecordBase):
     @classmethod
     def from_directory(cls, directory: Path, project: str):
         json_files = list(directory.glob("*record.json"))
-        import pdb
-        pdb.set_trace()
-        if len(list(json_files)) == 0:
+        if len(json_files) == 0:
             json_files = directory.glob("*.json")
         try:
             json_file = [file for file in json_files][0]
