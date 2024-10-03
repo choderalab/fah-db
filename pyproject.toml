@@ -3,11 +3,11 @@ requires = ["setuptools>=61.0", "versioningit"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "chemcards"
+name = "fah-db"
 #version = "0.0.1"
 dynamic = ["version"]
 authors = [
-  { name="fah-db", email="alex.payne@choderalab.org" },
+  { name="Alex Payne", email="alex.payne@choderalab.org" },
 ]
 description = "A tool for managing a database of input structures for Folding@home."
 readme = "README.md"
