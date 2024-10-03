@@ -88,7 +88,7 @@ class SourceRecord(ValidatedRecordBase):
 
     @classmethod
     def from_directory(cls, directory: Path, project: str):
-        json_files = directory.glob("*record.json")
+        json_files = list(directory.glob("*record.json"))
         import pdb
         pdb.set_trace()
         if len(list(json_files)) == 0:
