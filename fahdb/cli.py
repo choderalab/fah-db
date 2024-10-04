@@ -26,7 +26,7 @@ def report(database, comparison, output):
 @click.option("--destination", type=Path, help="Path to the database to sync to", required=True)
 @click.option("--sync", is_flag=True, help="Sync the databases", default=False)
 def sync(source, destination, sync):
-    source = FAHDatabase.from_directory(source)
+    source = SourceDatabase.from_directory(source)
     destination = FAHDatabase.from_directory(destination)
     comparison = destination.compare_to_source(source)
     comparison.report()
