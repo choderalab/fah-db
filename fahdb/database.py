@@ -190,7 +190,7 @@ class FAHDatabase(DatabaseBase):
             try:
                 validated_records.append(ValidatedFAHRecord(**record))
             except pydantic.ValidationError as e:
-                raise e(f"Error validating record: {record}")
+                print(f"Error validating record: {record}")
         return cls(
             home=str(Path(csv_path).parent),
             records=validated_records,
