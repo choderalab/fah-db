@@ -229,8 +229,6 @@ class FAHDatabase(DatabaseBase):
             unique_id=record.unique_id,
             project=record.project,
             home=str(Path(self.home) / record.project / f"RUN{run_index}"),
-            rcsb_id=record.rcsb_id,
-            sequence=record.sequence,
         )
 
     def get_missing(self, source: DatabaseBase):

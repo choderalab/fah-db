@@ -114,6 +114,9 @@ class SourceRecord(ValidatedRecordBase):
 class ValidatedFAHRecord(SourceRecord):
     run_index: int = Field(..., description="Index of the run")
 
+    class Config:
+        allow_extra = "True"
+
     @classmethod
     def from_json_file(cls, json_path):
         with open(json_path, "r") as f:
