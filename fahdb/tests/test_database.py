@@ -1,6 +1,6 @@
 import pytest
 from fahdb.data.resources import SOURCE, FAH
-from fahdb.records import NewRecord, ValidatedRecordBase, SourceRecord
+from fahdb.records import NewPDBRecord, ValidatedPDBRecordBase, SourceRecord
 from fahdb.database import NewStructureDatabase, InputStructureDatabase, SourceDatabase, FAHDatabase
 from pathlib import Path
 

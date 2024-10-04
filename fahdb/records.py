@@ -4,12 +4,9 @@ from pathlib import Path
 from pydantic import BaseModel, Field, field_validator
 from typing import Union
 
-
 class RecordBase(BaseModel):
     unique_id: str = Field(..., description="Unique identifier for the record")
     home: str = Field(..., description="Path to the home directory of the record")
-    rcsb_id: str = Field(..., description="RCSB ID of the record")
-    sequence: str = Field(..., description="Protein sequence of the record")
 
     @property
     def json_path(self) -> Path:
@@ -29,7 +26,6 @@ class RecordBase(BaseModel):
         with open(output_path, "w") as f:
             json.dump(self.dict(), f)
 
-
     @classmethod
     def from_json_file(cls, json_path):
         with open(json_path, "r") as f:
@@ -38,7 +34,15 @@ class RecordBase(BaseModel):
             return cls(**loaded)
 
 
+class PDBRecordBase(RecordBase):
+    rcsb_id: str = Field(..., description="RCSB ID of the record")
+    sequence: str = Field(..., description="Protein sequence of the record")
+
+
 class ValidatedRecordBase(RecordBase):
+    @classmethod
+    def from_new_record(cls, new_record: RecordBase):
+        return cls(**new_record.dict())
 
     @field_validator("home", mode='before')
     def home_exists(cls, v):
@@ -46,16 +50,20 @@ class ValidatedRecordBase(RecordBase):
             raise FileNotFoundError(f"Path {v} does not exist")
         return v
 
-    @classmethod
-    def from_new_record(cls, new_record: RecordBase):
-        return cls(**new_record.dict())
+
+class ValidatedPDBRecordBase(PDBRecordBase, ValidatedRecordBase):
+    pass
 
 
 class NewRecord(RecordBase):
     pass
 
 
-class StructureRecord(ValidatedRecordBase):
+class NewPDBRecord(PDBRecordBase):
+    pass
+
+
+class StructureRecord(ValidatedPDBRecordBase):
     filename: str = Field(..., description="Name of the pdb file in the record")
     box_length_nm: float = Field(
         ..., description="Length of the side of the cubic box in nm"

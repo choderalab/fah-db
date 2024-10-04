@@ -5,7 +5,7 @@ from pathlib import Path
 import abc
 import shutil
 
-from fahdb.records import NewRecord, StructureRecord, SourceRecord, ValidatedFAHRecord, NewFAHRecord
+from fahdb.records import NewPDBRecord, StructureRecord, SourceRecord, ValidatedFAHRecord, NewFAHRecord
 
 
 class NewStructureDatabase(BaseModel):
@@ -14,7 +14,7 @@ class NewStructureDatabase(BaseModel):
     """
 
     home: str = Field(..., description="Path to the home directory of the database")
-    records: list[NewRecord] = Field(..., description="List of records in the database")
+    records: list[NewPDBRecord] = Field(..., description="List of records in the database")
 
     @classmethod
     def from_csv(cls, home: str, csv_path: str):
@@ -23,7 +23,7 @@ class NewStructureDatabase(BaseModel):
         return cls(
             home=home,
             records=[
-                NewRecord(home=home, **record)
+                NewPDBRecord(home=home, **record)
                 for record in df.to_dict(orient="records")
             ],
         )

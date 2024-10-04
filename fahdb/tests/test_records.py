@@ -1,11 +1,11 @@
 import pytest
 from fahdb.data.resources import SOURCE_RECORD, SOURCE_JSON
-from fahdb.records import NewRecord, ValidatedRecordBase, SourceRecord
+from fahdb.records import NewPDBRecord, ValidatedPDBRecordBase, SourceRecord
 from pathlib import Path
 
 
 def test_new_record():
-    return NewRecord.from_json_file(SOURCE_JSON)
+    return NewPDBRecord.from_json_file(SOURCE_JSON)
 
 
 @pytest.fixture
@@ -25,17 +25,17 @@ def source_record(new_record):
 def test_record_roundtrip(new_record, tmp_path):
     new_record.update_home(tmp_path)
     new_record.write_json_file()
-    read_record = NewRecord.from_json_file(new_record.json_path)
+    read_record = NewPDBRecord.from_json_file(new_record.json_path)
     assert read_record == new_record
 
 
 def test_validation(new_record):
-    assert ValidatedRecordBase.from_new_record(new_record).dict() == new_record.dict()
+    assert ValidatedPDBRecordBase.from_new_record(new_record).dict() == new_record.dict()
 
 
 def test_validation_failure(new_record, tmp_path):
     fake_record = new_record.dict()
     fake_record["home"] = "fake_path"
     with pytest.raises(FileNotFoundError):
-        ValidatedRecordBase(**fake_record)
+        ValidatedPDBRecordBase(**fake_record)
 
