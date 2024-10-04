@@ -185,14 +185,15 @@ class FAHDatabase(DatabaseBase):
     def _from_csv(cls, csv_path: str):
         df = pd.read_csv(csv_path, dtype=str)
 
+        validated_records = []
         for record in df.to_dict(orient="records"):
             try:
-                validated_record = ValidatedFAHRecord(**record)
+                validated_records.append(ValidatedFAHRecord(**record))
             except pydantic.ValidationError as e:
-                print(f"Error validating record: {record}")
+                raise e(f"Error validating record: {record}")
         return cls(
             home=str(Path(csv_path).parent),
-            records=[ValidatedFAHRecord(**record) for record in df.to_dict(orient="records")],
+            records=validated_records,
             projects=list(df["project"].astype(str).unique()),
         )
 
