@@ -175,6 +175,7 @@ class FAHDatabase(DatabaseBase):
         if csv_path.exists():
             db_from_csv = cls._from_csv(str(csv_path))
             comparison = db_from_dir.compare_to_source(db_from_csv)
+            comparison.report()
             if comparison.missing and not ignore_missing:
                 raise FileNotFoundError(f"Missing records: {comparison.missing}")
             if comparison.extra and not ignore_extra:
