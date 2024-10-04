@@ -25,6 +25,7 @@ dependencies = ["pydantic", "tqdm", "pandas"]
 "Bug Tracker" = "https://github.com/chodederlab/fah-db/issues"
 
 [project.scripts]
+fahdb-cli = "fahdb.cli:cli"
 
 [tool.setuptools.packages.find]
 where = ["."]

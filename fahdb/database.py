@@ -107,6 +107,12 @@ class SourceDatabase(DatabaseBase):
             home=str(input_dir), records=records, projects=list(set(projects))
         )
 
+    def report(self):
+        print(f"Projects ({len(self.projects)}): ")
+        for project in self.projects:
+            print(f"\t{project} :")
+            print(f"\t\tRuns ({len([record for record in self.records if record.project == project])}):")
+
 
 class ComparisonReport(BaseModel):
     source: str = Field(..., description="Path to the source database")
@@ -118,6 +124,16 @@ class ComparisonReport(BaseModel):
         ...,
         description="List of records in the target database that are not in the source database",
     )
+
+    def report(self):
+        print(f"Source: {self.source}")
+        print(f"Target: {self.target}")
+        print(f"Missing records ({len(self.missing)}):")
+        for record in self.missing:
+            print(f"\t{record}")
+        print(f"Extra records ({len(self.extra)}):")
+        for record in self.extra:
+            print(f"\t{record}")
 
 
 class FAHDatabase(DatabaseBase):
@@ -158,7 +174,6 @@ class FAHDatabase(DatabaseBase):
         if csv_path.exists():
             db_from_csv = cls._from_csv(str(csv_path))
             comparison = db_from_dir.compare_to_source(db_from_csv)
-            print(comparison)
             if comparison.missing and not ignore_missing:
                 raise FileNotFoundError(f"Missing records: {comparison.missing}")
             if comparison.extra and not ignore_extra:
@@ -234,3 +249,9 @@ class FAHDatabase(DatabaseBase):
             ]
             self.records.extend(validated_records)
             self._to_csv()
+
+    def report(self):
+        print(f"Projects ({len(self.projects)}): ")
+        for project in self.projects:
+            print(f"\t{project} :")
+            print(f"\t\tRuns ({len([record for record in self.records if record.project == project])}):")
