@@ -15,7 +15,7 @@ def report(database, comparison, output):
     database.report()
 
     if comparison is not None:
-        comparison = SourceDatabase.from_directory(comparison)
+        comparison = FAHDatabase.from_directory(comparison)
         comparison.report()
 
         comparison_report = database.compare_to_source(comparison)
