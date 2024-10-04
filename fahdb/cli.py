@@ -20,3 +20,15 @@ def report(database, comparison, output):
 
         comparison_report = database.compare_to_source(comparison)
         comparison_report.report()
+
+@cli.command(help="Sync two databases")
+@click.option("--source", type=Path, help="Path to the database", required=True)
+@click.option("--destination", type=Path, help="Path to the database to sync to", required=True)
+@click.option("--sync", is_flag=True, help="Sync the databases", default=False)
+def sync(source, destination, sync):
+    source = FAHDatabase.from_directory(source)
+    destination = FAHDatabase.from_directory(destination)
+    comparison = destination.compare_to_source(source)
+    comparison.report()
+
+    destination.sync(source, sync=sync)

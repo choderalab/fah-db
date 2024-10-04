@@ -4,6 +4,7 @@ from pathlib import Path
 from pydantic import BaseModel, Field, field_validator
 from typing import Union
 
+
 class RecordBase(BaseModel):
     unique_id: str = Field(..., description="Unique identifier for the record")
     home: str = Field(..., description="Path to the home directory of the record")
