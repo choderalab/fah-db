@@ -34,7 +34,7 @@ class RecordBase(BaseModel):
     def from_json_file(cls, json_path):
         with open(json_path, "r") as f:
             loaded = json.load(f)
-            loaded["home"] = str(json_path.parent)
+            # loaded["home"] = str(json_path.parent)
             return cls(**loaded)
 
 
