@@ -39,6 +39,8 @@ class PDBRecordBase(RecordBase):
     rcsb_id: str = Field(..., description="RCSB ID of the record")
     sequence: str = Field(..., description="Protein sequence of the record")
 
+class PlinderRecord(RecordBase):
+    sequence: str = Field(..., description="Protein sequence of the record")
 
 class ValidatedRecordBase(RecordBase):
     @classmethod
@@ -73,10 +75,9 @@ class StructureRecord(ValidatedPDBRecordBase):
     class Config:
         extra = "allow"
 
-    @field_validator("filename")
-    def filename_exists(cls, v, values):
-        home = values.get("home")
-        if not Path(home) / v:
+    @field_validator("home", mode='before')
+    def home_exists(cls, v):
+        if not Path(v).exists():
             raise FileNotFoundError(f"Path {v} does not exist")
         return v
 
