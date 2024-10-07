@@ -9,6 +9,9 @@ class RecordBase(BaseModel):
     unique_id: str = Field(..., description="Unique identifier for the record")
     home: str = Field(..., description="Path to the home directory of the record")
 
+    class Config:
+        extra = "allow"
+
     @property
     def json_path(self) -> Path:
         return Path(self.home) / f"{self.unique_id}_record.json"
@@ -69,11 +72,8 @@ class NewPDBRecord(PDBRecordBase):
 class StructureRecord(ValidatedPDBRecordBase):
     filename: str = Field(..., description="Name of the pdb file in the record")
     box_length_nm: float = Field(
-        ..., description="Length of the side of the cubic box in nm"
+        0, description="Length of the side of the cubic box in nm"
     )
-
-    class Config:
-        extra = "allow"
 
     @field_validator("home", mode='before')
     def home_exists(cls, v):
